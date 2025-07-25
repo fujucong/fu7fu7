@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOS求助仪表盘</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background-color: #ff4444;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .alert {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .alert-header {
+            background-color: #ff6666;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .alert-body {
+            padding: 20px;
+        }
+        .map-placeholder {
+            height: 200px;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .no-alerts {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        .status-badge {
+            background-color: #ff3333;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SOS求助监控中心</h1>
+            <p>实时接收和处理紧急求助信号</p>
+        </div>
+
+        {% if sos_records %}
+            {% for record in sos_records|reverse %}
+            <div class="alert">
+                <div class="alert-header">
+                    <h3>紧急求助 #{{ loop.index }}</h3>
+                    <span class="status-badge">未处理</span>
+                </div>
+                <div class="alert-body">
+                    <p><strong>时间:</strong> {{ record.time }}</p>
+                    <p><strong>发送者:</strong> {{ record.sender }}</p>
+                    <p><strong>位置:</strong> {{ record.location }}</p>
+                    <p><strong>消息:</strong> {{ record.message }}</p>
+                    
+                    <div class="map-placeholder">
+                        <p>地图位置: {{ record.location }} (实际应用中显示地图)</p>
+                    </div>
+                    
+                    <div style="margin-top: 15px; text-align: right;">
+                        <button>标记为已处理</button>
+                        <button>联系求助者</button>
+                        <button>查看详情</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-alerts">
+                <h2>目前没有求助记录</h2>
+                <p>系统正在等待接收求助信号...</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
